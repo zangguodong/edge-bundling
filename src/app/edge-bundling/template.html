@@ -5,8 +5,11 @@
   height:outterSize.height+'px'
 }"
 >
-  <ng-content select=".edge-bundling__title"></ng-content>
+  <ng-container *ngIf="!rawEdges?.length">
+    <ng-content select=".edge-bundling__title"></ng-content>
+  </ng-container>
   <ng-content select=".edge-bundling__legend"></ng-content>
+
   <svg
     [attr.width]="outterSize.width"
     [attr.height]="outterSize.height"

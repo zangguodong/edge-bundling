@@ -15,7 +15,7 @@ export class AppComponent {
     // 设置边数量，联调节点数量
     edges: this.lineGenerator(0, 5),
   };
-  
+
   nodeGenerator(count: number): Node[] {
     return Array(count)
       .fill(0)
@@ -53,6 +53,4 @@ export class AppComponent {
         };
       });
   }
-
-  
 }

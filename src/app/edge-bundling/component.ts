@@ -82,6 +82,7 @@ export class EdgeBundlingComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(): void {
     this.rawEdges = this.data.edges.slice();
+    console.log('x', this.data.edges.slice());
     // 补齐背景edge
     this.data.edges = this.patchNodeEdge(this.data.edges, this.data.nodes);
     this.nodeDefs = this.getNodes();
