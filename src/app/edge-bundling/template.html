@@ -1,0 +1,79 @@
+<div
+  class="container"
+  [ngStyle]="{
+  width: outterSize.width+'px',
+  height:outterSize.height+'px'
+}"
+>
+  <ng-content select=".edge-bundling__title"></ng-content>
+  <ng-content select=".edge-bundling__legend"></ng-content>
+  <svg
+    [attr.width]="outterSize.width"
+    [attr.height]="outterSize.height"
+    class="panel"
+    [style.border]="'1px solid'"
+    id="egde-bundling"
+  >
+    <defs>
+      <filter
+        id="dropshadow"
+        x="-20%"
+        y="-20%"
+        width="140%"
+        height="140%"
+        filterUnits="userSpaceOnUse"
+      >
+        <!-- stdDeviation is how much to blur -->
+        <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
+        <feOffset dx="2" dy="2" result="offsetblur" />
+        <feOffset dx="-2" dy="-2" result="offsetblur" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+
+    <g *ngFor="let edge of edgeDefs">
+      <path
+        [attr.d]="edge.path"
+        fill="transparent"
+        [attr.stroke]="edge.stroke"
+        [style.strokeWidth]="edge.strokeWidth"
+      ></path>
+    </g>
+    <g *ngFor="let node of nodeDefs; index as i">
+      <circle
+        [attr.r]="node.radius+2"
+        *ngIf="[nodeChosen,nodeHover].includes(node)&&node.nodeSource.value"
+        class="node-chosen"
+        fill="#fff"
+        [attr.cx]="node.center[0]"
+        [attr.cy]="node.center[1]"
+        stroke="transparent"
+      ></circle>
+      <circle
+        class="edge-bundling-node"
+        [class.can-click]="node?.nodeSource?.value>0"
+        [attr.r]="node.radius"
+        [attr.fill]="node.fill"
+        [attr.cx]="node.center[0]"
+        [attr.cy]="node.center[1]"
+        (mouseover)="onTouchNode(node)"
+        (mouseleave)="onLeaveNode(node)"
+        (click)="onClickNode(node)"
+      ></circle>
+      <text
+        [attr.x]="(outterSize.width+innerSize.width)/2+labelOffset"
+        [attr.y]="(outterSize.height)/2 + 4"
+        [attr.fill]="node===nodeChosen?ACTIVE_LINE_COLOR:''"
+        *ngIf="node.isActive"
+        [style]="getRotate(node.angle)"
+        class="label"
+      >
+        {{node.label}}
+      </text>
+    </g>
+  </svg>
+</div>
